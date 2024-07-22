@@ -26,55 +26,61 @@ public class AccountController {
     // Add Account REST API
 
     @PostMapping
-    public ResponseEntity<AccountDto> addAccount(@RequestBody AccountDto accountDto)
+    @ResponseStatus(HttpStatus.CREATED)
+    public AccountDto addAccount(@RequestBody AccountDto accountDto)
     {
-        return new ResponseEntity<>(accountService.createAccount(accountDto), HttpStatus.CREATED);
+        return accountService.createAccount(accountDto);
     }
 
     // Get Account REST API
     @GetMapping("/{id}")
-    public ResponseEntity<AccountDto> getAccountByID(@PathVariable Long id)
+    @ResponseStatus(HttpStatus.OK)
+    public AccountDto getAccountByID(@PathVariable Long id)
     {
         // return new ResponseEntity<>(accountService.getAccountByID(id), HttpStatus.OK);
         // Or
         AccountDto accountDto = accountService.getAccountByID(id);
-        return ResponseEntity.ok(accountDto);
+        return accountDto;
     }
 
 
     // Deposit REST API
 
     @PutMapping("/{id}/deposit")
-    public ResponseEntity<AccountDto> deposit(@PathVariable Long id, @RequestBody Map<String, Double> request)
+    @ResponseStatus(HttpStatus.OK)
+    public AccountDto deposit(@PathVariable Long id, @RequestBody Map<String, Double> request)
     {
         double amount = request.get("amount");
         AccountDto accountDto = accountService.deposit(id, amount);
-        return ResponseEntity.ok(accountDto);
+        return accountDto;
     }
 
 
     // Withdraw REST API
     @PutMapping("/{id}/withdraw")
-    public ResponseEntity<AccountDto> withdraw(@PathVariable Long id, @RequestBody Map<String, Double> request)
+    @ResponseStatus(HttpStatus.OK)
+    public AccountDto withdraw(@PathVariable Long id, @RequestBody Map<String, Double> request)
     {
         double amount = request.get("amount");
         AccountDto accountDto = accountService.withdraw(id, amount);
-        return ResponseEntity.ok(accountDto);
+        return accountDto;
     }
 
     // Get all Account REST API
     @GetMapping("/allAccounts")
-    public ResponseEntity<List<AccountDto>> getAllAccounts()
+    @ResponseStatus(HttpStatus.OK)
+    public List<AccountDto> getAllAccounts()
     {
         List<AccountDto> accountDtos = accountService.getAllAccounts();
-        return ResponseEntity.ok(accountDtos);
+        return accountDtos;
     }
 
     // Delete Account REST API
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteAccount(@PathVariable Long id)
+    @ResponseStatus(HttpStatus.OK)
+    public String deleteAccount(@PathVariable Long id)
     {
         accountService.deleteAccount(id);
-        return ResponseEntity.ok("Account is deleted successfully.");
+        return "Account is deleted successfully.";
     }
 }
